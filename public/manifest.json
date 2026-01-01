@@ -1,0 +1,20 @@
+{
+  "name": "DivvyUp",
+  "short_name": "DivvyUp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f4f0",
+  "theme_color": "#f6f4f0",
+  "icons": [
+    {
+      "src": "/h.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/h.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

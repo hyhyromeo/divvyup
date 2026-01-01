@@ -173,7 +173,7 @@ export default function App() {
         );
       default:
         return (
-          <div className="flex flex-col items-center justify-center min-h-[80vh] px-6">
+          <div className="flex flex-col items-center justify-center min-h-screen px-6 pt-[env(safe-area-inset-top)]">
             <div className="bg-transparent p-6 rounded-full">
               <img
                 src="/h.svg"
@@ -266,18 +266,14 @@ export default function App() {
 
   return (
     <div
-      className={`min-h-screen bg-background text-slate-900 font-sans selection:bg-slate-200 ${
-        currentView === "join" || currentView === "create"
-          ? "h-[100svh] fixed inset-0"
-          : ""
-      }`}
+      className={`min-h-screen bg-background text-slate-900 font-sans selection:bg-slate-200`}
     >
       {currentView !== "home" && (
-        <header className="fixed top-0 w-full z-10 bg-transparent backdrop-blur-md border-b border-slate-200 h-16 flex items-center justify-center px-4">
+        <header className="fixed top-0 w-full z-10 bg-transparent backdrop-blur-md border-b border-slate-200 h-[calc(64px+env(safe-area-inset-top))] flex items-end justify-center px-4 pb-3">
           {currentView !== "dashboard" && (
             <button
               onClick={() => setCurrentView("home")}
-              className="absolute left-4 p-2 text-slate-400 hover:text-slate-700"
+              className="absolute left-4 bottom-3 p-2 text-slate-400 hover:text-slate-700"
             >
               <ArrowLeft size={24} />
             </button>
@@ -286,16 +282,20 @@ export default function App() {
             <img
               src="/h.svg"
               alt="Logo"
-              className="mt-2 size-24 object-contain"
+              className="h-12 w-20 object-cover pt-2"
             />
           </div>
         </header>
       )}
 
       <main
-        className={`${currentView === "home" ? "pt-0" : "pt-16 sm:pt-20"} ${
+        className={`${
+          currentView === "home"
+            ? "pt-0"
+            : "pt-[calc(64px+env(safe-area-inset-top))]"
+        } ${
           currentView === "join" || currentView === "create"
-            ? "h-[calc(100dvh-64px)] flex flex-col justify-center "
+            ? "min-h-[calc(100dvh-calc(64px+env(safe-area-inset-top)))] flex flex-col justify-center "
             : "min-h-screen pb-12"
         } max-w-md mx-auto`}
       >
