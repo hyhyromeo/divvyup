@@ -174,7 +174,7 @@ export default function App() {
       default:
         return (
           <div className="flex flex-col items-center justify-center min-h-[80vh] px-6">
-            <div className="bg-transparent p-6 rounded-full shadow-sm">
+            <div className="bg-transparent p-6 rounded-full">
               <img
                 src="/h.svg"
                 alt="DivvyUp Logo"
@@ -250,7 +250,7 @@ export default function App() {
             </div> */}
             {/* Copyright / Footer */}
             <footer className="mt-auto pt-12 pb-4 text-slate-400 text-[10px] font-medium tracking-widest uppercase">
-              &copy; 2026 DivvyUp. Built by{" "}
+              &copy; 2025 DivvyUp. Built by{" "}
               <a
                 href="https://hyromeo.com"
                 className="text-slate-400 hover:text-slate-700 underline"
@@ -265,7 +265,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-slate-900 font-sans selection:bg-slate-200">
+    <div
+      className={`min-h-screen bg-background text-slate-900 font-sans selection:bg-slate-200 ${
+        currentView === "join" || currentView === "create"
+          ? "h-[100svh] fixed inset-0"
+          : ""
+      }`}
+    >
       {currentView !== "home" && (
         <header className="fixed top-0 w-full z-10 bg-transparent backdrop-blur-md border-b border-slate-200 h-16 flex items-center justify-center px-4">
           {currentView !== "dashboard" && (
@@ -287,9 +293,11 @@ export default function App() {
       )}
 
       <main
-        className={`${
-          currentView === "home" ? "pt-0" : "pt-20"
-        } pb-12 max-w-md mx-auto min-h-screen`}
+        className={`${currentView === "home" ? "pt-0" : "pt-16 sm:pt-20"} ${
+          currentView === "join" || currentView === "create"
+            ? "h-[calc(100dvh-64px)] flex flex-col justify-center "
+            : "min-h-screen pb-12"
+        } max-w-md mx-auto`}
       >
         {renderContent()}
       </main>

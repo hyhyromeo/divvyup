@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Hangout';
-  src: url('/hangout.ttf') format('truetype');
+  font-family: "Hangout";
+  src: url("/hangout.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -12,11 +12,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for mobile feel */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  /* animation: fadeIn 0.5s ease-out; */
+  /* -webkit-animation: fadeIn 0.5s ease-out; */
+}
+
+.animate-slide-up {
+  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }

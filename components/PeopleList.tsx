@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Participant } from '../types';
 import * as api from '../actions/serverActions';
-import { Trash2, Shield, ShieldCheck, UserPlus, Crown } from 'lucide-react';
+import { Trash2, Shield, ShieldCheck, UserPlus, Crown, Loader2 } from 'lucide-react';
 
 interface Props {
   participants: Participant[];
   currentUser: Participant;
   groupId: string;
   onUpdate: () => void;
+  loading?: boolean;
 }
 
-export default function PeopleList({ participants, currentUser, groupId, onUpdate }: Props) {
+export default function PeopleList({ participants, currentUser, groupId, onUpdate, loading }: Props) {
   const [isAdding, setIsAdding] = useState(false);
   const [newNickname, setNewNickname] = useState('');
 
@@ -39,6 +40,15 @@ export default function PeopleList({ participants, currentUser, groupId, onUpdat
       await api.toggleAdmin(id);
       onUpdate();
   };
+
+  if (loading) {
+      return (
+          <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-slate-300 animate-spin" />
+              <p className="mt-4 text-slate-400 font-medium">Loading members...</p>
+          </div>
+      );
+  }
 
   return (
     <div className="pb-24 animate-fade-in">

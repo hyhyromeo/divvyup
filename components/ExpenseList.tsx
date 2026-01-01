@@ -1,15 +1,25 @@
 import React from 'react';
 import { FullExpense, Participant } from '../types';
-import { Receipt } from 'lucide-react';
+import { Receipt, Loader2 } from 'lucide-react';
 
 interface Props {
   expenses: FullExpense[];
   participants: Participant[];
   onSelectExpense: (expense: FullExpense) => void;
+  loading?: boolean;
 }
 
-export default function ExpenseList({ expenses, participants, onSelectExpense }: Props) {
+export default function ExpenseList({ expenses, participants, onSelectExpense, loading }: Props) {
   
+  if (loading) {
+      return (
+          <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-slate-300 animate-spin" />
+              <p className="mt-4 text-slate-400 font-medium">Loading expenses...</p>
+          </div>
+      );
+  }
+
   if (expenses.length === 0) {
       return (
           <div className="flex flex-col items-center justify-center py-20 text-slate-400">

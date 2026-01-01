@@ -1,16 +1,18 @@
 import React, { useMemo } from 'react';
 import { FullExpense, Participant, Debt } from '../types';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 
 interface Props {
   expenses: FullExpense[];
   participants: Participant[];
   currentUser: Participant;
+  loading?: boolean;
 }
 
-export default function BalanceView({ expenses, participants, currentUser }: Props) {
+export default function BalanceView({ expenses, participants, currentUser, loading }: Props) {
   
   const debts = useMemo(() => {
+    if (loading) return [];
     // 1. Calculate Net Balances
     const balances: Record<string, number> = {};
     participants.forEach(p => balances[p.id] = 0);
@@ -78,7 +80,16 @@ export default function BalanceView({ expenses, participants, currentUser }: Pro
     }
 
     return result;
-  }, [expenses, participants]);
+  }, [expenses, participants, loading]);
+
+  if (loading) {
+      return (
+          <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-slate-300 animate-spin" />
+              <p className="mt-4 text-slate-400 font-medium">Calculating balances...</p>
+          </div>
+      );
+  }
 
   if (debts.length === 0) {
       return (

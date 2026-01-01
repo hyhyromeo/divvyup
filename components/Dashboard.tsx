@@ -18,6 +18,7 @@ interface Props {
 export default function Dashboard({ group, currentUser, onLeave }: Props) {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [expenses, setExpenses] = useState<FullExpense[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<FullExpense | null>(null);
   const [editingExpense, setEditingExpense] = useState<FullExpense | null>(null);
@@ -27,10 +28,16 @@ export default function Dashboard({ group, currentUser, onLeave }: Props) {
   // Subscribe to changes in real-time
   useEffect(() => {
     const fetchData = async () => {
-      const data = await api.getGroupDetails(group.id);
-      if (data.group) {
-        setParticipants(data.participants);
-        setExpenses(data.expenses);
+      try {
+        const data = await api.getGroupDetails(group.id);
+        if (data.group) {
+          setParticipants(data.participants);
+          setExpenses(data.expenses);
+        }
+      } catch (err) {
+        console.error("Failed to fetch group details:", err);
+      } finally {
+        setLoading(false);
       }
     };
     
@@ -191,10 +198,16 @@ export default function Dashboard({ group, currentUser, onLeave }: Props) {
                 expenses={expenses} 
                 participants={participants} 
                 onSelectExpense={setSelectedExpense}
+                loading={loading}
             />
         )}
         {activeTab === 'balances' && (
-            <BalanceView expenses={expenses} participants={participants} currentUser={latestCurrentUser} />
+            <BalanceView 
+                expenses={expenses} 
+                participants={participants} 
+                currentUser={latestCurrentUser} 
+                loading={loading}
+            />
         )}
         {activeTab === 'people' && (
             <PeopleList 
@@ -202,6 +215,7 @@ export default function Dashboard({ group, currentUser, onLeave }: Props) {
                 currentUser={latestCurrentUser} 
                 onUpdate={handlePeopleUpdate}
                 groupId={group.id}
+                loading={loading}
             />
         )}
       </div>
