@@ -186,7 +186,7 @@ export default function App() {
             </h1> */}
             <p className="text-slate-500 mb-12 text-center max-w-md text-lg">
               The easiest way to split bills on trips. No accounts, no hassle.
-              Just create a group and start splitting.
+              Just create a group and start Divvy Up.
             </p>
 
             <div className="flex flex-col w-full max-w-xs gap-4">
@@ -248,6 +248,17 @@ export default function App() {
                 <span className="font-mono bg-white px-1 rounded">TOKYO24</span>
               </p>
             </div> */}
+            {/* Copyright / Footer */}
+            <footer className="mt-auto pt-12 pb-4 text-slate-400 text-[10px] font-medium tracking-widest uppercase">
+              &copy; 2026 DivvyUp. Built by{" "}
+              <a
+                href="https://hyromeo.com"
+                className="text-slate-400 hover:text-slate-700 underline"
+              >
+                Romeo Lau
+              </a>
+              .
+            </footer>
           </div>
         );
     }
