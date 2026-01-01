@@ -1,0 +1,7 @@
+{
+  "name": "DivvyUp",
+  "description": "A session-based bill-splitting app for travelers to track shared expenses. Create trips, invite friends, and settle debts simply.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
