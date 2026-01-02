@@ -26,7 +26,14 @@ export default function AvatarUpload({ onImageChange, initialImage }: Props) {
     }
   };
 
-  const resizeAndProcess = (source: HTMLImageElement | HTMLVideoElement): string => {
+  /**
+   * Resize source media to a square and return a compressed JPEG data URL.
+   * For selfie capture UX, we support mirroring so the saved image matches the mirrored preview.
+   */
+  const resizeAndProcess = (
+    source: HTMLImageElement | HTMLVideoElement,
+    options?: { mirror?: boolean }
+  ): string => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const size = 300; // Resize to 300x300 for storage efficiency
@@ -51,7 +58,17 @@ export default function AvatarUpload({ onImageChange, initialImage }: Props) {
     const dx = (size - scaledWidth) / 2;
     const dy = (size - scaledHeight) / 2;
 
-    ctx.drawImage(source, dx, dy, scaledWidth, scaledHeight);
+    // Mirror (selfie-style) if requested. This flips horizontally.
+    if (options?.mirror) {
+      ctx.save();
+      ctx.translate(size, 0);
+      ctx.scale(-1, 1);
+      // After flipping, adjust the x coordinate so content stays centered.
+      ctx.drawImage(source, -dx - scaledWidth, dy, scaledWidth, scaledHeight);
+      ctx.restore();
+    } else {
+      ctx.drawImage(source, dx, dy, scaledWidth, scaledHeight);
+    }
     
     const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
     return dataUrl;
@@ -93,7 +110,8 @@ export default function AvatarUpload({ onImageChange, initialImage }: Props) {
 
   const capturePhoto = () => {
     if (videoRef.current) {
-      const dataUrl = resizeAndProcess(videoRef.current);
+      // Mirror capture to match the mirrored selfie preview.
+      const dataUrl = resizeAndProcess(videoRef.current, { mirror: true });
       setPreview(dataUrl);
       onImageChange(dataUrl);
       closeCamera();
@@ -163,7 +181,14 @@ export default function AvatarUpload({ onImageChange, initialImage }: Props) {
         <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center">
             <div className="relative w-full max-w-md h-full flex flex-col">
                 {/* Camera View */}
-                <video ref={videoRef} autoPlay playsInline className="flex-1 w-full object-cover" />
+                {/* Mirror the selfie preview so it feels natural (like native camera apps). */}
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className="flex-1 w-full object-cover"
+                  style={{ transform: 'scaleX(-1)' }}
+                />
                 
                 {/* Overlay Controls */}
                 <div className="absolute bottom-0 w-full p-8 flex justify-between items-center bg-gradient-to-t from-black/80 to-transparent">
